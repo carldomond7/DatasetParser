@@ -7,20 +7,16 @@ app = FastAPI()
 
 class ParseRequest(BaseModel):
     text: str
+    text_2: str
     start_marker: str
     end_marker: str
     instruction: str
 
-class ParsedEntry(BaseModel):
-    instruction: str
-    input: str
-    output: str
-
-def parse_content(text: str, start_marker: str, end_marker: str, instruction: str) -> List[dict]:
+def parse_content(text: str, text_2: str, start_marker: str, end_marker: str, instruction: str) -> list:
     entries = []
     current_entry = None
-    in_output = False
-    
+    is_input = False
+
     for line in text.split('\n'):
         line = line.strip()
         if line.startswith(start_marker):
@@ -31,36 +27,40 @@ def parse_content(text: str, start_marker: str, end_marker: str, instruction: st
                 "input": "",
                 "output": ""
             }
-            in_output = False
-        elif line == end_marker:
-            in_output = True
-        elif current_entry:
-            if in_output:
-                current_entry["output"] += line + "\n"
-            else:
-                current_entry["input"] += line + "\n"
-    
+            is_input = True
+        elif line.startswith(end_marker):
+            is_input = False
+        elif current_entry and is_input:
+            current_entry["input"] += line + "\n"
+
     if current_entry:
         entries.append(current_entry)
     
-    # Clean up trailing newlines
+    # Clean up trailing newlines and assign text_2 to output
     for entry in entries:
         entry["input"] = entry["input"].strip()
-        entry["output"] = entry["output"].strip()
+        entry["output"] = text_2.strip()  # Directly use text_2 for the output
     
     return entries
 
+class ParseRequestList(BaseModel):
+    requests: List[ParseRequest]
+
 @app.post("/parse/")
-async def parse_text(request: ParseRequest):
+async def parse_text(requests: ParseRequestList):
     try:
-        entries = parse_content(
-            request.text, 
-            request.start_marker, 
-            request.end_marker,
-            request.instruction
-        )
+        all_entries = []
+        for request in requests.requests:
+            entries = parse_content(
+                request.text, 
+                request.text_2, 
+                request.start_marker, 
+                request.end_marker,
+                request.instruction
+            )
+            all_entries.extend(entries)
         # Format the entries as a JSON string
-        formatted_json = json.dumps(entries, indent=2)
-        return {"formatted_json": formatted_json}
+        formatted_json = json.dumps(all_entries, indent=2)
+        return formatted_json
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
