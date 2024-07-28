@@ -7,12 +7,12 @@ app = FastAPI()
 
 class ParseRequest(BaseModel):
     text: str
-    text_2: str
+    solution: str
     start_marker: str
     end_marker: str
     instruction: str
 
-def parse_content(text: str, text_2: str, start_marker: str, end_marker: str, instruction: str) -> list:
+def parse_content(text: str, solution: str, start_marker: str, end_marker: str, instruction: str) -> list:
     entries = []
     current_entry = None
     is_input = False
@@ -36,10 +36,10 @@ def parse_content(text: str, text_2: str, start_marker: str, end_marker: str, in
     if current_entry:
         entries.append(current_entry)
     
-    # Clean up trailing newlines and assign text_2 to output
+    # Clean up trailing newlines and assign solution to output
     for entry in entries:
         entry["input"] = entry["input"].strip()
-        entry["output"] = text_2.strip()  # Directly use text_2 for the output
+        entry["output"] = solution.strip()  # Directly use solution for the output
     
     return entries
 
@@ -53,7 +53,7 @@ async def parse_text(requests: ParseRequestList):
         for request in requests.requests:
             entries = parse_content(
                 request.text, 
-                request.text_2, 
+                request.solution, 
                 request.start_marker, 
                 request.end_marker,
                 request.instruction
