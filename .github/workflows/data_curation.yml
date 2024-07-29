@@ -28,6 +28,7 @@ jobs:
 
     - name: Commit and push response
       run: |
+        git config --global --add safe.directory /__w/DatasetParser/DatasetParser
         git config --global user.email "carldomond7@gmail.com"
         git config --global user.name "carldomond7"
         git add response.json
