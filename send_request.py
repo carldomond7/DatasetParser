@@ -11,7 +11,7 @@ def send_request():
     if not isinstance(payload, dict) or 'requests' not in payload:
         payload = {'requests': [payload]}
 
-    url = ""
+    url = "https://datasetparser.onrender.com/parse/"
     headers = {
         'Content-Type': 'application/json'
     }
