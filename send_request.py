@@ -22,7 +22,7 @@ def send_request():
         response_data = response.json()
         formatted_response = json.dumps(response_data, indent=4)
         # The response is already a JSON string, so we can write it directly
-        with open('response.json', 'w') as f:
+        with open('response.json', 'a') as f:
             f.write(formatted_response + '\n')
         print("API request successful. Response saved to response.json")
     else:
