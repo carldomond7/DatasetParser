@@ -51,16 +51,14 @@ async def parse_text(requests: ParseRequestList):
     try:
         all_entries = []
         for request in requests.requests:
-            entries = parse_content(
+            entry = parse_content(
                 request.text, 
                 request.solution, 
                 request.start_marker, 
                 request.end_marker,
                 request.instruction
             )
-            all_entries.extend(entries)
-        # Format the entries as a JSON string
-        formatted_json = json.dumps(all_entries, indent=2)
-        return formatted_json
+            all_entries.append(entry)
+        return all_entries
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
