@@ -19,9 +19,11 @@ def send_request():
     response = requests.post(url, headers=headers, json=payload)
 
     if response.status_code == 200:
+        response_data = response.json()
+        formatted_response = json.dumps(response_data, indent=4)
         # The response is already a JSON string, so we can write it directly
         with open('response.json', 'w') as f:
-            f.write(response.text)
+            f.write(formatted_response + '\n')
         print("API request successful. Response saved to response.json")
     else:
         print(f"Request failed with status code {response.status_code}")
