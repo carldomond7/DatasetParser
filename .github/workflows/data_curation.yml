@@ -24,7 +24,7 @@ jobs:
       run: pip install requests
 
     - name: Send API request and save response
-      run: python send_api_request.py
+      run: python send_request.py
 
     - name: Commit and push response
       run: |
