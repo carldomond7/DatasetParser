@@ -1,0 +1,29 @@
+name: Creating Pokemon Dataset
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  call-workflow-in-local-repo:
+    name: Create Poke dataset
+    uses: ./.github/workflows/data_curation.yml
+    with:
+      json_string: >
+        {
+          "requests": [
+            {
+              "text": "- Problem 1\nInfernape\nCharizard\n\nInfernape: It uses unique fighting moves with fire on its hands and feet. It will take on any opponent. This Pokémon confounds opponents with its speed. It uses all its limbs to fight in its own unique style.\nCharizard: Charizard is a large, dragon-like Pokémon that differs greatly from its pre-evolved form. The red skin coloration of Charmeleon is no longer apparent, as Charizard appears to have reverted to the orange/yellow coloration of Charmander. Two large fangs can be seen when its mouth is closed.\n\n- Pokemon Winner",
+              "text_2": "- Pokemon Winner\nInfernape's superior speed and agility could give it an edge over Charizard.\n\nWhile Charizard is known for its powerful fire attacks and flying capabilities, Infernape's quicker nature and Fighting-type moves can potentially exploit Charizard's weaknesses.\n\nHigh Speed: Infernape's natural speed allows it to potentially outmaneuver Charizard, landing crucial hits before Charizard can retaliate.\nFighting-Type Advantage: Fighting-type moves are super effective against Flying-type Pokémon like Charizard, giving Infernape a potential type advantage.\nClose Combat: A powerful Fighting-type move that can deal significant damage, especially if Infernape manages to close the gap.\nHowever, it's important to note that this is a simplified analysis, and the outcome of a battle can be influenced by various factors such as individual strengths, weaknesses, movesets, and strategies.",
+              "start_marker": "- Problem",
+              "end_marker": "- Pokemon Winner",
+              "instruction": "Determine which pokemon would win in a fight"
+            },
+            {
+              "text": "- Problem 2\nPikachu\nSquirtle\n\nPikachu: Pikachu are small, and cute mouse-like Pokémon. They are almost completely covered by yellow fur. They have long yellow ears that are tipped with black. A Pikachu's back has two brown stripes, and its large tail is notable for being shaped like a lightning bolt, yet its brown tip is almost always forgotten.\nSquirtle: Shoots water at prey while in water. Withdraws into its shell when in danger. Squirtle's shell is not merely used for protection. The shell's rounded shape and the grooves on its surface help minimize resistance in water, enabling this Pokémon to swim at high speeds.\n\n- Pokemon Winner",
+              "text_2": "- Pokemon Winner\nSquirtle's Water-type advantage over Pikachu's Electric type could give it a significant edge.\n\nWhile Pikachu is known for its speed and Electric-type attacks, Squirtle's Water-type moves are super effective against Electric-type Pokémon.\n\nType Advantage: Water-type moves deal double damage to Electric-type Pokémon, giving Squirtle a clear advantage in a one-on-one battle.\nDefensive Stance: Squirtle's defensive capabilities, such as using Water Gun to counter Electric attacks or Shellder to protect itself, can also help it withstand Pikachu's assaults.\nHowever, as with any Pokémon battle, factors like individual levels, movesets, and strategies can influence the outcome. Pikachu's speed and agility could potentially pose a threat if Squirtle is unable to land its Water-type attacks.",
+              "start_marker": "- Problem",
+              "end_marker": "- Pokemon Winner",
+              "instruction": "Determine which pokemon would win in a fight"
+            }
+          ]
+        }
